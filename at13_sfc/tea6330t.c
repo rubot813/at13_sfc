@@ -1,4 +1,4 @@
-#include "tea6330t.h"
+﻿#include "tea6330t.h"
 
 void tea_init( void ) {
 	soft_i2c_init( );

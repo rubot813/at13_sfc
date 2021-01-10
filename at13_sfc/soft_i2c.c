@@ -1,4 +1,4 @@
-#include "soft_i2c.h"
+п»ї#include "soft_i2c.h"
 
 void soft_i2c_start( void ) {
 	SOFT_I2C_CLR_SDA;
@@ -22,13 +22,13 @@ unsigned char soft_i2c_stop( void ) {
 	SOFT_I2C_SET_SDA;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 
-	// Провка ошибок на линиях
+	// РџСЂРѕРІРєР° РѕС€РёР±РѕРє РЅР° Р»РёРЅРёСЏС…
 	if ( ( SOFT_I2C_PIN & ( 1 << SOFT_I2C_SDA ) ) == 0 )
 		error = 2;
 	if ( ( SOFT_I2C_PIN & ( 1 << SOFT_I2C_SCL ) ) == 0 )
 		error |= 1;
 
-	// todo: Уточнить длительность задержки после условия стоп
+	// todo: РЈС‚РѕС‡РЅРёС‚СЊ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р·Р°РґРµСЂР¶РєРё РїРѕСЃР»Рµ СѓСЃР»РѕРІРёСЏ СЃС‚РѕРї
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
@@ -38,42 +38,42 @@ unsigned char soft_i2c_stop( void ) {
 }
 
 void soft_i2c_reset( void ) {
-	// Поднятие в 1 всех ног шины
+	// РџРѕРґРЅСЏС‚РёРµ РІ 1 РІСЃРµС… РЅРѕРі С€РёРЅС‹
 	SOFT_I2C_SET_SDA;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	SOFT_I2C_SET_SCL;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 
-	// Опускание в 0 всех ног шины
+	// РћРїСѓСЃРєР°РЅРёРµ РІ 0 РІСЃРµС… РЅРѕРі С€РёРЅС‹
 	soft_i2c_start( );
 }
 
 void soft_i2c_init( void ) {
 	SOFT_I2C_SET_SDA;
 	SOFT_I2C_SET_SCL;
-	soft_i2c_stop( );	// Намеренное игнорирование ошибок
+	soft_i2c_stop( );	// РќР°РјРµСЂРµРЅРЅРѕРµ РёРіРЅРѕСЂРёСЂРѕРІР°РЅРёРµ РѕС€РёР±РѕРє
 }
 
 unsigned char soft_i2c_write( unsigned char data ) {
 	unsigned char ack = SOFT_I2C_ACK;
 	unsigned char i;
 
-	// Проход по битам
+	// РџСЂРѕС…РѕРґ РїРѕ Р±РёС‚Р°Рј
 	for ( i = 0; i < 8; i++ ) {
-		// Выдаем на линию текущий бит
+		// Р’С‹РґР°РµРј РЅР° Р»РёРЅРёСЋ С‚РµРєСѓС‰РёР№ Р±РёС‚
 		if ( ( data & 0x80 ) == 0 ) {
 			SOFT_I2C_CLR_SDA;
 		} else {
 			SOFT_I2C_SET_SDA;
 		}
 
-		// Импульс по тактовой линии
+		// РРјРїСѓР»СЊСЃ РїРѕ С‚Р°РєС‚РѕРІРѕР№ Р»РёРЅРёРё
 		_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 		SOFT_I2C_SET_SCL;
 		_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 		SOFT_I2C_CLR_SCL;
 
-		// Смещение в данных
+		// РЎРјРµС‰РµРЅРёРµ РІ РґР°РЅРЅС‹С…
 		data = ( data << 1 );
 	}
 
@@ -88,7 +88,7 @@ unsigned char soft_i2c_write( unsigned char data ) {
 		ack = SOFT_I2C_ACK;
 	}
 
-	// Отпускание тактовой линии
+	// РћС‚РїСѓСЃРєР°РЅРёРµ С‚Р°РєС‚РѕРІРѕР№ Р»РёРЅРёРё
 	SOFT_I2C_CLR_SCL;
 
 	return ack;
@@ -100,13 +100,13 @@ unsigned char soft_i2c_read( unsigned char ack ) {
 
 	SOFT_I2C_SET_SDA;
 
-	// Проход по битам
+	// РџСЂРѕС…РѕРґ РїРѕ Р±РёС‚Р°Рј
 	for ( i = 0; i < 8; i++ ) {
 		data = ( data << 1 );
 		SOFT_I2C_SET_SCL;
 		_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 
-		// Сохраняем бит
+		// РЎРѕС…СЂР°РЅСЏРµРј Р±РёС‚
 		if ( ( SOFT_I2C_PIN & ( 1 << SOFT_I2C_SDA ) ) == ( 1 << SOFT_I2C_SDA ) )
 			data |= 0x01;
 		
