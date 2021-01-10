@@ -22,8 +22,8 @@
 #define SOFT_I2C_PORT		PORTB
 
 // Названия битов PORTA для выходов SDA / SCL
-#define SOFT_I2C_SCL		PORTB0
-#define SOFT_I2C_SDA		PORTB1
+#define SOFT_I2C_SDA		PORTB0
+#define SOFT_I2C_SCL		PORTB1
 
 // Коды подтверждений
 #define SOFT_I2C_ACK	0	// Подтверждено

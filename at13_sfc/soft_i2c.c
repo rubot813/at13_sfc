@@ -5,7 +5,6 @@ void soft_i2c_start( void ) {
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	SOFT_I2C_CLR_SCL;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
-
 }
 
 unsigned char soft_i2c_stop( void ) {
@@ -80,7 +79,7 @@ unsigned char soft_i2c_write( unsigned char data ) {
 
 	SOFT_I2C_SET_SDA;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
-	SOFT_I2C_CLR_SDA;
+	SOFT_I2C_SET_SCL;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 
 	if ( ( SOFT_I2C_PIN & ( 1 << SOFT_I2C_SDA ) ) == ( 1 << SOFT_I2C_SDA ) ) {
