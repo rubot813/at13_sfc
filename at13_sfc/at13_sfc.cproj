@@ -94,6 +94,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="rotary_encoder.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rotary_encoder.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="soft_i2c.c">
       <SubType>compile</SubType>
     </Compile>

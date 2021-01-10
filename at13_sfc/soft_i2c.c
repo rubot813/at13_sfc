@@ -10,13 +10,13 @@ void soft_i2c_start( void ) {
 unsigned char soft_i2c_stop( void ) {
 	unsigned char error = SOFT_I2C_NACK;
 
-	// SCL/SDA => 0
+	// SCL / SDA => 0
 	SOFT_I2C_CLR_SCL;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	SOFT_I2C_CLR_SDA;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 
-	// SCL/SDA => 1
+	// SCL / SDA => 1
 	SOFT_I2C_SET_SCL;
 	_delay_ms( SOFT_I2C_DELAY_TIME_MS );
 	SOFT_I2C_SET_SDA;
@@ -51,7 +51,7 @@ void soft_i2c_reset( void ) {
 void soft_i2c_init( void ) {
 	SOFT_I2C_SET_SDA;
 	SOFT_I2C_SET_SCL;
-	soft_i2c_stop( );	// Игнорирование ack/nack = мы мастер
+	soft_i2c_stop( );	// Намеренное игнорирование ошибок
 }
 
 unsigned char soft_i2c_write( unsigned char data ) {

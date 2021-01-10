@@ -1,20 +1,39 @@
 #include "tea6330t.h"
+#include "rotary_encoder.h"
+/*
+	Задействованные ножки МК: 
+	PB0 - I2C SDA
+	PB1 - I2C SCL
+	PB2 - энкодер ножка A
+	PB3 - энкодер ножка B
+*/
 
-int main(void) {
+int main( void ) {
+
+	// Значение громкости на левом канале	
+	unsigned char volume_left = 50;
+	// Тут можно дополнить другими параметрами
 	
-	soft_i2c_init( );
+	// Инициализация I2C для TEA6330T и энкодера
+	tea_init( );
+	re_init( );
 	
-	DDRB |= _BV( PB4 );
-	
-    while(1) {
-		PORTB |= _BV( PB4 );
-		_delay_ms( 1000 );
-		PORTB &= ~_BV( PB4 );
-		_delay_ms( 1000 );
-		soft_i2c_start( );
-		soft_i2c_write( 0xF0 );
-		soft_i2c_write( 0x1F );
-		soft_i2c_write( 0x15 );
-		soft_i2c_stop( );
+	// Основной цикл программы
+    while( 1 ) {
+		// Если покрутили энкодер
+		if ( encoder_value ) {
+			
+			// Подстройка громкости
+			if ( encoder_value > 0 ) {
+				volume_left++;
+			} else {
+				volume_left--;
+			}
+			// Запись громокости в TEA6330T
+			tea_set_vl( volume_left );
+			
+			// Сбрасываем значение энкодера
+			encoder_value = 0;
+		}
     }
 }
